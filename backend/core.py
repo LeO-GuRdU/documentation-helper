@@ -45,13 +45,16 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
     retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
     stuff_documents_chain = create_stuff_documents_chain(chat, retrieval_qa_chat_prompt)
 
+    # Crea history-aware retriever en el que la pregunta se reformula considerando el historial de chat
     history_aware_retriever = create_history_aware_retriever(
         llm=chat, retriever=docsearch.as_retriever(), prompt=rephrase_prompt
     )
+    # Crea la cadena de preguntas y respuestas basada en la documentacion relevante y el historial de chat
     qa = create_retrieval_chain(
         retriever=history_aware_retriever, combine_docs_chain=stuff_documents_chain
     )
 
+    # Invoca la cadena de preguntas y respuestas con la consulta y el historial de chat
     result = qa.invoke(input={"input": query, "chat_history": chat_history})
     return result
 

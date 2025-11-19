@@ -76,15 +76,15 @@ with st.sidebar:
     st.title("User Profile")
 
     # You can replace these with actual user data
-    user_name = "John Doe"
-    user_email = "john.doe@example.com"
+    user_name = "LeO_GuRdU"
+    user_email = "leogurdu@example.com"
 
     profile_pic = get_profile_picture(user_email)
     st.image(profile_pic, width=150)
     st.write(f"**Name:** {user_name}")
     st.write(f"**Email:** {user_email}")
 
-st.header("LangChain🦜🔗 Udemy Course- Helper Bot")
+st.header("Curso de Udemy de LangChain🦜🔗 - Chat Bot con Doc de Langchain")
 
 # Initialize session state
 if "chat_answers_history" not in st.session_state:
@@ -96,14 +96,13 @@ if "chat_answers_history" not in st.session_state:
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    prompt = st.text_input("Prompt", placeholder="Enter your message here...")
+    prompt = st.text_input("Prompt", placeholder="Ingrese su mensaje aquí...")
 
 with col2:
-    if st.button("Submit", key="submit"):
-        prompt = prompt or "Hello"  # Default message if input is empty
-
+    if st.button("Enviar", key="submit"):
+        prompt = prompt or "Hola"  # Default message if input is empty
 if prompt:
-    with st.spinner("Generating response..."):
+    with st.spinner("Generando respuesta..."):
         generated_response = run_llm(
             query=prompt, chat_history=st.session_state["chat_history"]
         )
@@ -113,10 +112,10 @@ if prompt:
             f"{generated_response['answer']} \n\n {create_sources_string(sources)}"
         )
 
-        st.session_state["user_prompt_history"].append(prompt)
-        st.session_state["chat_answers_history"].append(formatted_response)
-        st.session_state["chat_history"].append(("human", prompt))
-        st.session_state["chat_history"].append(("ai", generated_response["answer"]))
+        st.session_state["user_prompt_history"].insert(0,prompt)
+        st.session_state["chat_answers_history"].insert(0,formatted_response)
+        st.session_state["chat_history"].insert(0,("human", prompt))
+        st.session_state["chat_history"].insert(0,("ai", generated_response["answer"]))
 
 # Display chat history
 if st.session_state["chat_answers_history"]:
